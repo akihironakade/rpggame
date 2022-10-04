@@ -1,0 +1,212 @@
+package rpggame;
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.util.InputMismatchException;
+import java.util.Random;
+import java.util.Scanner;
+
+public class Main {
+
+	public static void main(String args[]) {
+		int hero_hp = 200;
+		System.out.println("勇者のHPは" + hero_hp + "です。");
+		System.out.println("モンスターが出現した。");
+		Random rand = new Random();
+		int slime_hp = 80;
+		int ghost_hp = 100;
+		int num1 = rand.nextInt(100);
+		if(num1 < 30) {
+			System.out.println("スライムが現れた");
+			System.out.println("スライムのHPは" + slime_hp + "です。");
+			ghost_hp = 0;
+		} else if(30 <= num1 && num1 < 50) {
+			System.out.println("お化けが現れた。");
+			System.out.println("お化けのHPは" + ghost_hp + "です。");
+			slime_hp = 0;
+
+		} else {
+			System.out.println("スライムとお化けが現れた。");
+			System.out.println("スライムのHPは" + slime_hp + "です。");
+			System.out.println("お化けのHPは" + ghost_hp + "です。");
+		}
+		Scanner outer_sc = new Scanner(System.in);
+
+		label1: while(true) {
+			System.out.println("1:戦う");
+			System.out.println("2:逃げる");
+			System.out.println("番号で選択してください。");
+
+			label2: while(true)
+				try {
+					int num = outer_sc.nextInt();
+					if(num == 1) {
+						if(slime_hp > 0 && ghost_hp > 0) {
+							System.out.println("スライムとお化けどちらを攻撃するか選んでください");
+							System.out.println("スライムの場合は1を、お化けの場合は2を入力してください。");
+							InputStreamReader inputStreamReader = new InputStreamReader(System.in);
+							BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+							int subject = 0;
+							while(true)
+
+								try {
+									String buf = bufferedReader.readLine();
+									subject = Integer.parseInt(buf);
+
+									if(subject == 1) {
+										System.out.println("勇者の攻撃");
+										int num2 = rand.nextInt(100);
+										int da1 = num2 + 50;
+										int da2 = (int) (0.05 * (num2)) + 10;
+										if(num2 < 15) {
+											System.out.println("会心の一撃");
+											System.out.println(da1 + "のダメージ");
+											slime_hp = slime_hp - da1;
+										} else if(num2 >= 90) {
+											System.out.println("ミス。ダメージを与えられませんでした");
+
+										} else {
+											System.out.println("ダメージを与えた");
+											System.out.println(da2 + "のダメージ");
+
+											slime_hp = slime_hp - da2;
+										}
+										if(slime_hp <= 0) {
+											System.out.println("スライムを倒した");
+										}
+										break label2;
+									}
+
+									if(subject == 2) {
+										System.out.println("勇者の攻撃");
+										int num3 = rand.nextInt(100);
+										int da3 = num3 + 50;
+										int da4 = (int) (0.05 * (num3)) + 10;
+										if(num3 < 15) {
+											System.out.println("会心の一撃");
+											System.out.println(da3 + "のダメージ");
+											ghost_hp = ghost_hp - da3;
+										} else if(num3 >= 90) {
+											System.out.println("ミス。ダメージを与えられませんでした");
+
+										} else {
+											System.out.println("ダメージを与えた");
+											System.out.println(da4 + "のダメージ");
+
+											ghost_hp = ghost_hp - da4;
+										}
+										if(ghost_hp <= 0) {
+											System.out.println("お化けを倒した");
+										}
+										break label2;
+									}
+									if(subject <= 0 || subject > 2) {
+										System.out.println("正しい番号を入力してください。");
+										continue;
+									}
+								} catch (Exception exception) {
+									subject = 0;
+									System.out.println("番号で選択してください。");
+									continue;
+								}
+						} else {
+							System.out.println("勇者の攻撃");
+							int num4 = rand.nextInt(100);
+
+							int da5 = num4 + 50;
+							int da6 = (int) (0.05 * (num4)) + 10;
+							if(num4 < 15) {
+								System.out.println("会心の一撃");
+								System.out.println(da5 + "のダメージ");
+								if(slime_hp <= 0) {
+									ghost_hp = ghost_hp - da5;
+								} else {
+									slime_hp = slime_hp - da5;
+								}
+							} else if(num4 >= 90) {
+								System.out.println("ミス。ダメージを与えられませんでした");
+
+							} else {
+								System.out.println("ダメージを与えた");
+								System.out.println(da6 + "のダメージ");
+								if(slime_hp <= 0) {
+									ghost_hp = ghost_hp - da6;
+
+								} else {
+									slime_hp = slime_hp - da6;
+								}
+							}
+							if(slime_hp <= 0 && ghost_hp <= 0) {
+								System.out.println("敵を全滅させた");
+								break label1;
+							}
+							break label2;
+						}
+					}
+					if(num == 2) {
+						System.out.println("勇者は逃げ出した。");
+						System.out.println("HP全回復");
+						break label1;
+					}
+					if(num <= 0 || num > 2) {
+						System.out.println("正しい番号を入力してください。");
+						continue;
+					}
+				} catch (InputMismatchException e) {
+					System.out.println("番号で選択してください。");
+					outer_sc.next();
+				}
+			if(slime_hp > 0) {
+				System.out.println("スライムの攻撃");
+				int num5 = rand.nextInt(100);
+
+				int da7 = num5 + 20;
+				int da8 = (int) (0.05 * (num5)) + 5;
+				if(num5 < 15) {
+					System.out.println("痛恨の一撃");
+					System.out.println(da7 + "のダメージ");
+					hero_hp = hero_hp - da7;
+				} else if(num5 >= 90) {
+					System.out.println("ミス。ダメージを受けなかった");
+				} else {
+					System.out.println("ダメージを受けた");
+					System.out.println(da8 + "のダメージ");
+					hero_hp = hero_hp - da8;
+				}
+				if(hero_hp <= 0) {
+					System.out.println("勇者は目の前が真っ暗になった。");
+				}
+			}
+			if(ghost_hp > 0) {
+				System.out.println("お化けの攻撃");
+				int num6 = rand.nextInt(100);
+
+				int da9 = num6 + 40;
+				int da10 = (int) (0.1 * (num6)) + 15;
+				if(num6 < 15) {
+					System.out.println("痛恨の一撃");
+					System.out.println(da9 + "のダメージ");
+					hero_hp = hero_hp - da9;
+				} else if(num6 >= 90) {
+					System.out.println("ミス。ダメージを受けなかった");
+				} else {
+					System.out.println("ダメージを受けた");
+					System.out.println(da10 + "のダメージ");
+					hero_hp = hero_hp - da10;
+				}
+			}
+			if(hero_hp <= 0) {
+				System.out.println("勇者は目の前が真っ暗になった。");
+				break label1;
+			}
+			System.out.println("勇者のHPは" + hero_hp + "です。");
+			if(slime_hp > 0) {
+				System.out.println("スライムのHPは" + slime_hp + "です。");
+			}
+			if(ghost_hp > 0) {
+				System.out.println("お化けのHPは" + ghost_hp + "です。");
+			}
+		}
+		outer_sc.close();
+	}
+}
